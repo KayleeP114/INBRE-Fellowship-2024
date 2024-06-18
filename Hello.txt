@@ -1,2 +1,0 @@
-Hello, I am learning Linux!
-I like dogs.
