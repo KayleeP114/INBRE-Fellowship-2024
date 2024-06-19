@@ -4,7 +4,7 @@ from openmm.unit import *
 from sys import stdout
 
 #uploading pdb file
-pdb = PDBFILE('1aki.pdb')
+pdb = PDBFile('1aki.pdb')
 
 #specify the forcefield(reproduces molecular geometry and selected properties)
 forcefield = ForceField('amber14-all.xml','amber14/tip3pfb.xml')
