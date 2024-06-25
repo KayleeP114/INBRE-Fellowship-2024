@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 # Load the PDB file
-pdb = PDBFile('K62.pdb')
+pdb = PDBFile('1AKI.pdb')
 
 
 # Specify the forcefield
