@@ -11,7 +11,7 @@ forcefield = ForceField('amber14-all.xml','amber14/tip3pfb.xml')
 
 #clean up(removing crystal water structures and adding in H)
 modeller = Modeller(pdb.topology, pdb.positions)
-modeller.deletewater()
+modeller.deleteWater()
 residues=modeller.addHydrogens(forcefield)
 
 #adding solvate(simulates realistic environment)
