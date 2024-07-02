@@ -11,7 +11,7 @@ pdb = PDBFile(input_pdb)
 
 # Create a system (you'll need to define your force field here)
 # For example, using Amber99SBildn force field:
-from simtk.openmm.app import Amber99SBildn
+from openmm.app import Amber99SBildn
 forcefield = Amber99SBildn()
 system = forcefield.createSystem(pdb.topology, nonbondedMethod=NoCutoff)
 
