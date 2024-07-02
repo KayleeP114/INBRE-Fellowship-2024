@@ -1,7 +1,7 @@
 import os
 
 input_file = "K62.pdb"
-output_file = "K62 w/o H.pdb"
+output_file = "K62 without H.pdb"
 
 def remove_hydrogens(input_pdb, output_pdb):
     with open(input_pdb, 'r') as infile, open(output_pdb, 'w') as outfile:
