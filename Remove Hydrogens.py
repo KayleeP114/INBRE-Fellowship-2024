@@ -1,50 +1,34 @@
 import os
+from simtk.openmm.app import PDBFile, Simulation
+from simtk.openmm import LangevinIntegrator, Platform
 
-input_file = "K62.pdb"
-output_file = "K62 without H.pdb"
+# Define input and output file paths
+input_pdb = "K62.pdb"
+output_pdb = "k62_no_H.pdb"
 
-def remove_hydrogens(input_pdb, output_pdb):
-    with open(input_pdb, 'r') as infile, open(output_pdb, 'w') as outfile:
-        for line in infile:
-            if line.startswith("ATOM") or line.startswith("HETATM"):
-                atom_name = line[12:16].strip()
-                if not atom_name.startswith("H"):
-                    outfile.write(line)
+# Load the PDB file
+pdb = PDBFile(input_pdb)
 
-def parse_pdb(file_path):
-    atoms = []
-    with open(file_path, 'r') as file:
-        for line in file:
-            if line.startswith("ATOM") or line.startswith("HETATM"):
-                atoms.append(line)
-    return atoms
+# Create a system (you'll need to define your force field here)
+# For example, using Amber99SBildn force field:
+from simtk.openmm.app import Amber99SBildn
+forcefield = Amber99SBildn()
+system = forcefield.createSystem(pdb.topology, nonbondedMethod=NoCutoff)
 
-def verify_removal(input_atoms, output_atoms):
-    removed_atoms = [line for line in input_atoms if line not in output_atoms]
-    incorrectly_removed = [line for line in removed_atoms if not line[12:16].strip().startswith('H')]
-    return len(input_atoms), len(output_atoms), len(removed_atoms), len(incorrectly_removed)
+# Set up the simulation
+integrator = LangevinIntegrator(300 * unit.kelvin, 1 / unit.picosecond, 0.002 * unit.picoseconds)
+platform = Platform.getPlatformByName("CPU")  # Use "CUDA" for GPU acceleration
+simulation = Simulation(pdb.topology, system, integrator, platform)
 
-if __name__ == "__main__":
-    input_path = os.path.join(os.getenv("HOME"), "INBRE-Fellowship-2024",  input_file)
-    output_path = os.path.join(os.getenv("HOME"), "INBRE-Fellowship-2024",  output_file)
-    
-    # Remove hydrogens
-    remove_hydrogens(input_path, output_path)
-    
-    # Parse both input and output PDB files
-    input_atoms = parse_pdb(input_path)
-    output_atoms = parse_pdb(output_path)
-    
-    # Verify removal
-    input_count, output_count, removed_count, incorrectly_removed_count = verify_removal(input_atoms, output_atoms)
-    
-    print(f"Hydrogens removed. Output saved to {output_path}")
-    print(f"Total atoms in original file: {input_count}")
-    print(f"Total atoms in output file: {output_count}")
-    print(f"Number of atoms removed: {removed_count}")
-    print(f"Number of non-hydrogen atoms incorrectly removed: {incorrectly_removed_count}")
-    
-    if incorrectly_removed_count == 0:
-        print("Verification successful: No non-hydrogen atoms were incorrectly removed.")
-    else:
-        print("Verification failed: Some non-hydrogen atoms were incorrectly removed.")
+# Set initial positions
+simulation.context.setPositions(pdb.positions)
+
+# Minimize energy
+simulation.minimizeEnergy()
+
+# Run the simulation (you can adjust the number of steps)
+simulation.step(1000)
+
+# Save the output PDB
+simulation.saveState(output_pdb)
+print(f"Hydrogens removed. Output saved to {output_pdb}")
