@@ -21,9 +21,10 @@ def compare_protonation_states(pdb_files):
     comparison = {res: [states.get(res, '-') for states in protonation_states_list] for res in all_residues}
     return comparison
 
-pdb_files = ['K62_pH4_H++.pdb', 'K62_pH4_propka.pdb', 'K62_pH4_PypKa.pdb']
+pdb_files = ['K62_pH4_propka.pdb', 'K62_pH4_H++.pdb', 'K62_pH4_PypKa.pdb']
 comparison = compare_protonation_states(pdb_files)
 
 print(f"{'Residue':<20} {'File1':<10} {'File2':<10} {'File3':<10}")
 for res, states in comparison.items():
-    print(f"{res:<20} {states[0]:<10} {states[1]:<10} {states[2]:<10}")
+    res_str = f"{res[0]} {res[1]} {res[2]}"
+    print(f"{res_str:<20} {states[0]:<10} {states[1]:<10} {states[2]:<10}")
