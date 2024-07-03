@@ -168,7 +168,7 @@ def plot_rmsf(rmsf):
     step = max(1, len(residues) // 10)  
     for i in range(0, len(residues), step):
             for i in range(0, len(residues), step):
-    plt.text(residues[i], rmsf[i], f'{rmsf[i]:.2f}', fontsize=8, ha='center')
+        plt.text(residues[i], rmsf[i], f'{rmsf[i]:.2f}', fontsize=8, ha='center')
     plt.xlabel('Residue')
     plt.ylabel('RMSF (Å)')
     plt.title('RMSF for #####')
