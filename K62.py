@@ -1,40 +1,44 @@
-from openmm.app import *
-from openmm import *
-from openmm.unit import *
+from openmm import app, unit, openmm
 import sys
-
-# Load PDB file
-pdb = PDBFile('K62.pdb')  # Ensure this file exists and has water molecules
-
-# Create a force field object
-forcefield = ForceField('amber14-all.xml', 'amber14/tip3p.xml')
-
-# Define the periodic box dimensions (assuming a cubic box with a side length of 3 nm)
-box_size = 3.0 * nanometers
-pdb.topology.setPeriodicBoxVectors(Vec3(10, 0, 0), Vec3(0, 10, 0))
-
-# Create a system object from the topology
-system = forcefield.createSystem(pdb.topology, nonbondedMethod=PME, nonbondedCutoff=1*nanometer, constraints=HBonds)
-
-# Create an integrator object
-integrator = LangevinIntegrator(300*kelvin, 1/picosecond, 0.002*picoseconds)
-
+# Load the PDB file
+pdb = app.PDBFile('K62.pdb')
+# Check if periodic box dimensions are defined, if not set default dimensions
+if pdb.topology.getPeriodicBoxVectors() is None:
+    print("Periodic box dimensions not found. Setting default dimensions.")
+    box_size = 10.0 * unit.nanometers  #Box size, adjust as needed
+    vectors = (
+        [box_size, 0.0 * unit.nanometers, 0.0 * unit.nanometers],
+        [0.0 * unit.nanometers, box_size, 0.0 * unit.nanometers],
+        [0.0 * unit.nanometers, 0.0 * unit.nanometers, box_size]
+    )
+    pdb.topology.setPeriodicBoxVectors(vectors)
+# Load a force field
+forcefield = app.ForceField('amber14-all.xml', 'tip3p.xml')
+# Create the system
+system = forcefield.createSystem(
+    pdb.topology,
+    nonbondedMethod=app.PME,
+    nonbondedCutoff=1.0 * unit.nanometers,
+    constraints=app.HBonds
+)
+# Set up the integrator
+integrator = openmm.LangevinIntegrator(
+    300 * unit.kelvin,
+    1.0 / unit.picoseconds,
+    2.0 * unit.femtoseconds
+)
 # Create a simulation object
-simulation = Simulation(pdb.topology, system, integrator)
-
-# Set the initial positions of the atoms
+simulation = app.Simulation(pdb.topology, system, integrator)
+# Set the initial positions
 simulation.context.setPositions(pdb.positions)
-
 # Minimize the energy
-print('Minimizing energy...')
+print("Minimizing energy...")
 simulation.minimizeEnergy()
-
-# Set up reporters to record simulation data
-simulation.reporters.append(StateDataReporter(sys.stdout, 1000, step=True, potentialEnergy=True, temperature=True))
-simulation.reporters.append(DCDReporter('trajectory.dcd', 1000))
-
+# Set up reporters to record data during the simulation
+simulation.reporters.append(app.StateDataReporter(sys.stdout, 1000, step=True, potentialEnergy=True, temperature=True))
+simulation.reporters.append(app.DCDReporter('H++_trajectory.dcd', 1000))
+simulation.reporters.append(app.CheckpointReporter('H++_checkpoint.chk', 1000))
 # Run the simulation
-print('Running simulation...')
-simulation.step(10000)  # Run for 10,000 steps
-
-print('Simulation complete')
+print("Running simulation...")
+simulation.step(10000)
+print("Simulation complete.")
