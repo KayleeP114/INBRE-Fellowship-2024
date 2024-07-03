@@ -3,9 +3,15 @@ from openmm import *
 from openmm.unit import *
 import sys
 
-# Create a system using the force field (use either amber14 or charmm36)
-pdb = PDBFile('K62.pdb')  # Load a PDB file
+# Load PDB file
+pdb = PDBFile('K62.pdb')  # Ensure this file exists and has water molecules
+
+# Create a force field object
 forcefield = ForceField('amber14-all.xml', 'amber14/tip3p.xml')
+
+# Define the periodic box dimensions (assuming a cubic box with a side length of 3 nm)
+box_size = 3.0 * nanometers
+pdb.topology.setPeriodicBoxVectors(Vec3(box_size, 0, 0), Vec3(0, box_size, 0), Vec3(0, 0, box_size))
 
 # Create a system object from the topology
 system = forcefield.createSystem(pdb.topology, nonbondedMethod=PME, nonbondedCutoff=1*nanometer, constraints=HBonds)
