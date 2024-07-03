@@ -17,6 +17,6 @@ fixer.removeHeterogens(False)
 
 # Write out the fixed PDB file
 with open(output_pdb_file, 'w') as f:
-    PDBFixer.writeFile(fixer.topology, fixer.positions, f)
+    PDBFile.writeFile(fixer.topology, fixer.positions, f)
 
 print(f"Fixed PDB written to {output_pdb_file}")
