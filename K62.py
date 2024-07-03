@@ -36,8 +36,8 @@ print("Minimizing energy...")
 simulation.minimizeEnergy()
 # Set up reporters to record data during the simulation
 simulation.reporters.append(app.StateDataReporter(sys.stdout, 1000, step=True, potentialEnergy=True, temperature=True))
-simulation.reporters.append(app.DCDReporter('H++_trajectory.dcd', 1000))
-simulation.reporters.append(app.CheckpointReporter('H++_checkpoint.chk', 1000))
+simulation.reporters.append(app.DCDReporter('K62_trajectory.dcd', 1000))
+simulation.reporters.append(app.CheckpointReporter('K62_checkpoint.chk', 1000))
 # Run the simulation
 print("Running simulation...")
 simulation.step(10000)
