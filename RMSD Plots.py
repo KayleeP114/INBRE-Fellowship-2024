@@ -9,8 +9,8 @@ from datetime import datetime
 ### Set to dark mode
 plt.style.use('dark_background')
 
-### Load the PDB/PQR and DCD files from H++
-u = mda.Universe('#TEMPLATE', '#TEMPLATE')
+### Load the PDB/PQR and DCD files
+u = mda.Universe('K62_pH4_H++.pdb', 'H++_trajectory.dcd')
 
 ### Select all atoms
 all_atoms = u.select_atoms('all')
