@@ -10,8 +10,8 @@ pdb = PDBFile('K62.pdb')  # Ensure this file exists and has water molecules
 forcefield = ForceField('amber14-all.xml', 'amber14/tip3p.xml')
 
 # Define the periodic box dimensions (assuming a cubic box with a side length of 3 nm)
-box_size = 3.0 * nanometers
-pdb.topology.setPeriodicBoxVectors(Vec3(box_size, 0, 0), Vec3(0, box_size, 0), Vec3(0, 0, box_size))
+box_size = 10.0 * nanometers
+pdb.topology.setPeriodicBoxVectors(Vec3(10, 0, 0), Vec3(0, 10, 0), Vec3(0, 0, 10))
 
 # Create a system object from the topology
 system = forcefield.createSystem(pdb.topology, nonbondedMethod=PME, nonbondedCutoff=1*nanometer, constraints=HBonds)
