@@ -11,7 +11,6 @@ forcefield = ForceField('amber14-all.xml', 'amber14/tip3p.xml')
 
 # Define the periodic box dimensions (assuming a cubic box with a side length of 3 nm)
 box_size = 10.0 * nanometers
-pdb.topology.setPeriodicBoxVectors(Vec3(10, 0, 0), Vec3(0, 10, 0))
 
 # Create a system object from the topology
 system = forcefield.createSystem(pdb.topology, nonbondedMethod=PME, nonbondedCutoff=1*nanometer, constraints=HBonds)
