@@ -1,7 +1,7 @@
 from openmm import app, unit, openmm
 import sys
 # Load the PDB file
-pdb = app.PDBFile('K62_pH4_propka.pdb')
+pdb = app.PDBFile('K62_pH4_propka.pqr')
 # Check if periodic box dimensions are defined, if not set default dimensions
 if pdb.topology.getPeriodicBoxVectors() is None:
     print("Periodic box dimensions not found. Setting default dimensions.")
