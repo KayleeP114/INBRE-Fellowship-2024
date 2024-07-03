@@ -14,7 +14,6 @@ fixer.addMissingHydrogens()
 # Apply fixes
 fixer.findMissingResidues()
 fixer.removeHeterogens(False)
-fixer.replaceNonstandardResidues()
 
 # Write out the fixed PDB file
 with open(output_pdb_file, 'w') as f:
