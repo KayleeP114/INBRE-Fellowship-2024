@@ -122,7 +122,7 @@ def plot_rmsd(rmsd, interval_ns):
     plt.plot(time, rmsd[:, 2], color='cyan')
     avg_rmsd = np.mean(rmsd[:, 2])
     plt.axhline(y=avg_rmsd, color='yellow', linestyle='--', label=f'Avg RMSD: {avg_rmsd:.2f} Å')
-    step = max(1, len(time) // 10)  
+    step = max(1, len(time) // 100)  
     for i in range(0, len(time), step):  
         plt.text(time[i], rmsd[i, 2], f'{rmsd[i, 2]:.2f}', fontsize=8, ha='center')
     plt.xlabel('Time (ns)')
@@ -139,7 +139,7 @@ def plot_radius_of_gyration(Rg, interval_ns):
     time = np.arange(0, len(Rg) * interval_ns, interval_ns)
     plt.figure()
     plt.plot(time, Rg, color='cyan')
-    step = max(1, len(time) // 10)  
+    step = max(1, len(time) // 100)  
     for i in range(0, len(time), step):  
         plt.text(time[i], Rg[i], f'{Rg[i]:.2f}', fontsize=8, ha='center')
     plt.xlabel('Time (ns)')
@@ -155,7 +155,7 @@ def plot_hydrogen_bonds(hbond_counts, interval_ns):
     time = np.arange(0, len(hbond_counts) * interval_ns, interval_ns)
     plt.figure()
     plt.plot(time, hbond_counts, color='cyan')
-    step = max(1, len(time) // 10)  
+    step = max(1, len(time) // 100)  
     for i in range(0, len(time), step):  
         plt.text(time[i], hbond_counts[i], f'{hbond_counts[i]}', fontsize=8, ha='center')
     plt.xlabel('Time (ns)')
@@ -173,7 +173,7 @@ def plot_rmsf(rmsf):
     plt.plot(residues, rmsf, color='cyan')
     avg_rmsf = np.mean(rmsf)
     plt.axhline(y=avg_rmsf, color='yellow', linestyle='--', label=f'Avg RMSF: {avg_rmsf:.2f} Å')
-    step = max(1, len(residues) // 10)  
+    step = max(1, len(residues) // 100)  
     for i in range(0, len(residues), step):
             for i in range(0, len(residues), step):
         plt.text(residues[i], rmsf[i], f'{rmsf[i]:.2f}', fontsize=8, ha='center')
@@ -186,7 +186,7 @@ def plot_rmsf(rmsf):
     print("RMSF plot saved.")
 
 #### Highlight Key Residues Based on pKa
-def highlight_key_residues(protonation_states, pH=4.6):
+def highlight_key_residues(protonation_states, pH=4.0):
     key_residues = {k: v for k, v in protonation_states.items() if v and abs(v - pH) < 1.0}
     print(f"Key residues near pH {pH}:")
     for res, pka in key_residues.items():
