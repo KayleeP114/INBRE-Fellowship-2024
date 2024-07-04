@@ -214,7 +214,7 @@ def main(interval_ns=1):
     plot_hydrogen_bonds(hbond_counts, interval_ns)
     
     #### Calculate and plot RMSF
-    rmsf = calculate_rmsf()
+    rmsf = calculate_rmsf(all_atoms)
     plot_rmsf(rmsf)
     
     print(f"Analysis complete. Plots saved as 'H++_rmsd_dark_{interval_ns}ns_{timestamp}.png', 'H++_radius_of_gyration_dark_{interval_ns}ns_{timestamp}.png', 'H++_hydrogen_bonds_dark_{interval_ns}ns_{timestamp}.png', and 'H++_rmsf_dark_{timestamp}.png'.")
