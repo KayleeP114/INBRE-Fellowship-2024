@@ -111,8 +111,10 @@ def calculate_hydrogen_bonds(interval_ns=1):
     return h.count_by_time()[::interval_ns]
 
 #### RMSF Analysis
-def calculate_rmsf():
-    rmsf = RMSF(all_atoms).run()
+def calculate_rmsf(all_atoms):
+    backbone_atoms = ['N', 'CA', 'C', 'O']
+    filtered_atoms = [atom for atom in all_atoms if atom.atom_name in backbone_atoms]
+    rmsf = RMSF(filtered_atoms).run()
     return rmsf.rmsf
 
 #### Generate a timestamp
