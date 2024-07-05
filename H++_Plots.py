@@ -220,5 +220,5 @@ def main(interval_ns=1):
     print(f"Analysis complete. Plots saved as 'H++_rmsd_dark_{interval_ns}ns_{timestamp}.png', 'H++_radius_of_gyration_dark_{interval_ns}ns_{timestamp}.png', 'H++_hydrogen_bonds_dark_{interval_ns}ns_{timestamp}.png', and 'H++_rmsf_dark_{timestamp}.png'.")
 
 if __name__ == "__main__":
-    interval_ns = 1  #### Set time interval here
+    interval_ns = 100  #### Set time interval here
     main(interval_ns)
