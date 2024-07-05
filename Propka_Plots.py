@@ -179,7 +179,7 @@ def plot_rmsf(rmsf):
     plt.plot(residues, rmsf, color='cyan')
     avg_rmsf = np.mean(rmsf)
     plt.axhline(y=avg_rmsf, color='yellow', linestyle='--', label=f'Avg RMSF: {avg_rmsf:.2f} Å')
-    step = max(1, len(residues) // 100)  
+    step = max(1, len(residues) // 10)  
     for i in range(0, len(residues), step):
         plt.text(residues[i], rmsf[i], f'{rmsf[i]:.2f}', fontsize=8, ha='center')
     plt.xlabel('Residue')
