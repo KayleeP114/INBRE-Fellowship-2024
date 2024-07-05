@@ -128,7 +128,7 @@ def plot_rmsd(rmsd, interval_ns):
     plt.plot(time, rmsd[:, 2], color='cyan')
     avg_rmsd = np.mean(rmsd[:, 2])
     plt.axhline(y=avg_rmsd, color='yellow', linestyle='--', label=f'Avg RMSD: {avg_rmsd:.2f} Å')
-    step = max(1, len(time) // 100)  
+    step = max(1, len(time) // 10)  
     for i in range(0, len(time), step):  
         plt.text(time[i], rmsd[i, 2], f'{rmsd[i, 2]:.2f}', fontsize=8, ha='center')
     plt.xlabel('Time (ns)')
@@ -145,7 +145,7 @@ def plot_radius_of_gyration(Rg, interval_ns):
     time = np.arange(0, len(Rg) * interval_ns, interval_ns)
     plt.figure()
     plt.plot(time, Rg, color='cyan')
-    step = max(1, len(time) // 100)  
+    step = max(1, len(time) // 10)  
     for i in range(0, len(time), step):  
         plt.text(time[i], Rg[i], f'{Rg[i]:.2f}', fontsize=8, ha='center')
     plt.xlabel('Time (ns)')
@@ -161,7 +161,7 @@ def plot_hydrogen_bonds(hbond_counts, interval_ns):
     time = np.arange(0, len(hbond_counts) * interval_ns, interval_ns)
     plt.figure()
     plt.plot(time, hbond_counts, color='cyan')
-    step = max(1, len(time) // 100)  
+    step = max(1, len(time) // 10)  
     for i in range(0, len(time), step):  
         plt.text(time[i], hbond_counts[i], f'{hbond_counts[i]}', fontsize=8, ha='center')
     plt.xlabel('Time (ns)')
