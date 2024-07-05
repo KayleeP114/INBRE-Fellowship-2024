@@ -169,7 +169,6 @@ def plot_rmsf(rmsf):
     plt.axhline(y=avg_rmsf, color='yellow', linestyle='--', label=f'Avg RMSF: {avg_rmsf:.2f} Å')
     step = max(1, len(residues) // 100)  
     for i in range(0, len(residues), step):
-            for i in range(0, len(residues), step):
         plt.text(residues[i], rmsf[i], f'{rmsf[i]:.2f}', fontsize=8, ha='center')
     plt.xlabel('Residue')
     plt.ylabel('RMSF (Å)')
@@ -209,7 +208,7 @@ def main(interval_ns=1):
     plot_hydrogen_bonds(hbond_counts, interval_ns)
     
     #### Calculate and plot RMSF
-    rmsf = calculate_rmsf()
+    rmsf = calculate_rmsf(all_atoms)
     plot_rmsf(rmsf)
     
     print(f"Analysis complete. Plots saved as 'PypKa_rmsd_dark_{interval_ns}ns_{timestamp}.png', 'PypKa_radius_of_gyration_dark_{interval_ns}ns_{timestamp}.png', 'PypKa_hydrogen_bonds_dark_{interval_ns}ns_{timestamp}.png', and 'PypKa_rmsf_dark_{timestamp}.png'.")

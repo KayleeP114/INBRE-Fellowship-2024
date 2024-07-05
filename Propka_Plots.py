@@ -220,7 +220,7 @@ def main(interval_ns=1):
     plot_hydrogen_bonds(hbond_counts, interval_ns)
     
     #### Calculate and plot RMSF
-    rmsf = calculate_rmsf()
+    rmsf = calculate_rmsf(all_atoms)
     plot_rmsf(rmsf)
     
     print(f"Analysis complete. Plots saved as 'propka_rmsd_dark_{interval_ns}ns_{timestamp}.png', 'propka_radius_of_gyration_dark_{interval_ns}ns_{timestamp}.png', 'propka_hydrogen_bonds_dark_{interval_ns}ns_{timestamp}.png', and 'propka_rmsf_dark_{timestamp}.png'.")
