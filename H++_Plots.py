@@ -107,7 +107,7 @@ def calculate_hydrogen_bonds(interval_ns=1):
 #### RMSF Analysis
 def calculate_rmsf(all_atoms):
     backbone_atoms = ['N', 'CA', 'C', 'O']
-    filtered_atoms = [atom for atom in all_atoms if atom.atom_name in backbone_atoms]
+    filtered_atoms = [atom for atom in all_atoms if atom.name in backbone_atoms]
     rmsf = RMSF(filtered_atoms).run()
     return rmsf.rmsf
 
