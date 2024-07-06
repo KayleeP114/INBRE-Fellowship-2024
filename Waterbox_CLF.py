@@ -2,8 +2,8 @@ from pdbfixer import PDBFixer
 from openmm.app import PDBFile, Modeller, ForceField
 from openmm import unit
 
-# Step 1: Read in the PDB file
-fixer = PDBFixer(filename='k1_H++.pdb')
+# Step 1: Read in the PDB file (K62_pH4_H++.pdb, K62_pH4_PypKa.pdb, K62_pH4_propka.pqr)
+fixer = PDBFixer(filename='K62_pH4_H++.pdb')
 
 # Step 2: Add missing atoms and residues (excluding hydrogens)
 fixer.findMissingResidues()

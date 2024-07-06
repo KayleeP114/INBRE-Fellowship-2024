@@ -105,10 +105,8 @@ def calculate_hydrogen_bonds(interval_ns=1):
     return h.count_by_time()[::interval_ns]
 
 #### RMSF Analysis
-def calculate_rmsf(all_atoms):
-    backbone_atoms = ['N', 'CA', 'C', 'O']
-    filtered_atoms = [atom for atom in all_atoms if atom.name in backbone_atoms]
-    rmsf = RMSF(filtered_atoms).run()
+def calculate_rmsf():
+    rmsf = RMSF(protein.select_atoms('name CA')).run()
     return rmsf.rmsf
 
 #### Generate a timestamp
@@ -170,7 +168,7 @@ def plot_rmsf(rmsf):
     print("Plotting RMSF...")
     residues = np.arange(len(rmsf))
     plt.figure()
-    plt.plot(residues, rmsf, color='cyan')
+    plt.plot(residues, rmsf, color='cyan', label='RMSF')
     avg_rmsf = np.mean(rmsf)
     plt.axhline(y=avg_rmsf, color='yellow', linestyle='--', label=f'Avg RMSF: {avg_rmsf:.2f} Å')
     step = max(1, len(residues) // 10)  
@@ -214,7 +212,7 @@ def main(interval_ns=1):
     plot_hydrogen_bonds(hbond_counts, interval_ns)
     
     #### Calculate and plot RMSF
-    rmsf = calculate_rmsf(all_atoms)
+    rmsf = calculate_rmsf()
     plot_rmsf(rmsf)
     
     print(f"Analysis complete. Plots saved as 'H++_rmsd_dark_{interval_ns}ns_{timestamp}.png', 'H++_radius_of_gyration_dark_{interval_ns}ns_{timestamp}.png', 'H++_hydrogen_bonds_dark_{interval_ns}ns_{timestamp}.png', and 'H++_rmsf_dark_{timestamp}.png'.")
