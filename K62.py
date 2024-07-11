@@ -1,7 +1,11 @@
-from openmm import app, unit, openmm
+import parmed as pmd
+from openmm.app import *
+from openmm import *
+from openmm.unit import *
 import sys
-# Load the PDB file
-pdb = app.PDBFile('K62_pH4_propka.pqr')
+# Load the CIF file with parmed
+structure = pmd.load_file('')
+
 # Check if periodic box dimensions are defined, if not set default dimensions
 if pdb.topology.getPeriodicBoxVectors() is None:
     print("Periodic box dimensions not found. Setting default dimensions.")
