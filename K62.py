@@ -4,8 +4,8 @@ from openmm import *
 from openmm.unit import *
 import sys
 
-# Load the CIF file with parmed ()
-structure = pmd.load_file('')
+# Load the CIF file with parmed (H++.cif, propka.cif, pypka.cif)
+structure = pmd.load_file('H++.cif')
 
 # Convert parmed to Openmm toopology and positions
 topology = structure.topology
