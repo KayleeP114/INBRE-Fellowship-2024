@@ -1,3 +1,4 @@
+import parmed as pmd
 import MDAnalysis as mda
 from MDAnalysis.analysis import rms, align
 from MDAnalysis.analysis.hydrogenbonds.hbond_analysis import HydrogenBondAnalysis as HBA
