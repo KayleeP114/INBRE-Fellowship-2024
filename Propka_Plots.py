@@ -12,7 +12,7 @@ plt.style.use('dark_background')
 
 ### Load the CIF and DCD files
 structure = pmd.load_file('propka.cif')
-u = mda.Universe('propka_trajectory.dcd')
+u = mda.Universe('.dcd')
 
 ### Select all atoms
 all_atoms = u.select_atoms('all')
