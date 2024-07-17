@@ -1,5 +1,5 @@
 from Bio import SeqIO
 
-target = "K62.pdb"
+target = "2ztb.pdb"
 for record in SeqIO.parse(target, "pdb-atom"):
     print(record.seq)
