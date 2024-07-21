@@ -365,3 +365,292 @@ def getRMSD(traj, top, ref):
     '''
     Calculates and prints out the RMSD of the trajectory.
     '''
+
+    atoms = top.select(args.rmsd)
+    rmsds = md.rmsd(traj, reference=ref, frame=args.superfr,
+            atom_indices=atoms)
+    frame = 0
+    print('# Frame   RMSD(nm)')
+    for rmsd in rmsds:
+        frame += 1
+        print('{:6d}  {:10.4f} '.format(frame, rmsd))
+
+
+def getRMSF(traj, top, ref):
+    '''
+    Calculates and prints out the RMSF of the trajectory.
+    '''
+
+    atoms = top.select(args.rmsf)
+    rmsfs = md.rmsf(traj, reference=ref, frame=args.superfr,
+            atom_indices=atoms)
+    atom = 0
+    print('# AtomNum  RMSF(nm)')
+    for rmsf in rmsfs:
+        atom += 1
+        print('{:9d}  {:8.4f} '.format(atom, rmsf))
+
+
+def getPeriodicDist(traj, top, ref):
+    '''
+    Uses gromacs to calculate the minimum distance between a selection and
+    it's periodic image. Useful to see whether a protein could be interacting
+    with itself during the trajectory.
+    '''
+
+    print('Running gmx mindist -pi')
+    tmpxtc = 'tmp.mdtraj.xtc'
+    tmpxvg = 'tmp.mdtraj.xvg'
+    tmppdb = 'tmp.mdtraj.pdb'
+    traj.save(tmpxtc)
+    ref.save_pdb(tmppdb)
+    cmd = 'echo 1 | gmx mindist -pi -f ' + tmpxtc + ' -s ' + tmppdb +\
+            ' -od ' + tmpxvg + ' 2>&1'
+    process = subprocess.Popen(cmd, shell = True, executable = '/bin/bash',
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process.wait()
+    lines = process.communicate()[0].decode('utf-8').splitlines()
+    os.remove(tmpxtc)
+    os.remove(tmpxvg)
+    os.remove(tmppdb)
+    for line in lines:
+        if line.startswith('The shortest periodic'):
+            frame = int(line.split()[9])
+            dist = float(line.split()[5])
+            print("Shortest periodic distance is {:.3f} ".format(dist) +
+                    "nm at frame {:d}".format(frame))
+
+
+def getDist(traj, top):
+    '''
+    Computes distances between selections and outputs the average, minimum and
+    maximum values.
+    '''
+
+    ndx1 = top.select(args.dist[0])
+    ndx2 = top.select(args.dist[1])
+    pairs = list(itertools.product(ndx1, ndx2))
+    distmat = md.compute_distances(traj, pairs)
+    avemat = np.mean(distmat, axis=1)
+    minmat = np.min(distmat, axis=1)
+    maxmat = np.max(distmat, axis=1)
+    frame = 0
+    print("# Frame  AveDist(nm)  MinDist(nm)  MaxDist(nm)")
+    for avedist, mindist, maxdist in zip(avemat, minmat, maxmat):
+        frame += 1
+        print("{:7d}  {:11.4f}  {:11.4f}  {:11.4f}".format(frame, avedist,
+                mindist, maxdist))
+
+
+def getContacts(traj, top):
+    '''
+    Outputs contacts between two selections.
+    '''
+    
+    ndx1 = top.select(args.contacts[0])
+    ndx2 = top.select(args.contacts[1])
+    cutoff = float(args.contacts[2])
+    cont_type = args.contacts[3]
+    contacts = md.compute_neighbors(traj, cutoff=cutoff, query_indices=ndx1,
+            haystack_indices=ndx2)
+    
+    if cont_type == 'num':
+        frame = 0
+        print('# Frame   NumContacts')
+        for c in contacts:
+            frame += 1
+            print('{:6d}  {:5d} '.format(frame, len(c)))
+    
+    elif cont_type == 'res':
+        for c in contacts:
+            resset = set()
+            for a in range(0, len(c)):
+                iatom = str(top.atom(c[a]))
+                ires = iatom.split('-')[0]
+                resset.add(ires)
+            reslist=list(resset)
+            reslist.sort(key=lambda x: int(x[3:]))
+            print(*reslist, sep=',')
+
+    else:
+        print('ERROR: contact type must be "num" or "res"')
+
+
+
+def OLDgetCoordNum(traj, top):
+    '''
+    Outputs the coordinate number between two selections.
+    '''
+
+    flag = args.coord
+    cutoff = 0.5
+    startRec = 19  # 0 based shift for receptor index, ndx_new = ndx - startRec
+    ndxRec = [19, 24, 27, 28, 30, 31, 34, 35, 37, 38, 41, 42, 45, 79, 82, 83,
+            330, 353, 354, 355, 357, 393] # ACE2 binding site residues
+    ndxRecNum = len(ndxRec)
+    ndxRec = [ndx-startRec for ndx in ndxRec]
+    startPep = 0
+    nPep = 0
+    lPep = 0
+    if flag == '10sirah6':
+        startPep = 598 # residue index (0 based) of first peptide
+        nPep = 10
+        lPep = 6
+    elif flag == '10obc6':
+        startPep = 602 # residue index (0 based) of first peptide
+        nPep = 10
+        lPep = 6
+    elif flag == '1sirah6':
+        startPep = 598 # residue index (0 based) of first peptide
+        nPep = 1
+        lPep = 2
+    elif flag == '1obc6':
+        startPep = 602 # residue index (0 based) of first peptide
+        nPep = 1
+        lPep = 6
+    print('#Frame  maxCoord  Pep')
+    saveContacts = []
+    for pep in range(0, nPep):
+        ndxPep = list(range(startPep, startPep+lPep))
+        pairs = list(itertools.product(ndxPep, ndxRec))
+        allContacts, trash = md.compute_contacts(traj, pairs,
+                scheme='closest', ignore_nonprotein=False)
+        saveContacts.append(allContacts)
+        startPep = startPep + lPep
+    for frame in range(0, traj.n_frames):
+        coordMax = -1.0
+        pepMax = 0
+        for pep in range(0, nPep):
+            contacts = saveContacts[pep][frame]
+            coord = 0
+            start = 0
+            for ndx in range(0, lPep):
+                stop = start + ndxRecNum
+                if np.count_nonzero(contacts[start:stop]<cutoff) > 0:
+                    coord += 1
+                start = start + ndxRecNum
+            if coord > coordMax:
+                coordMax = coord
+                pepMax = pep
+            #print('{:6d}  {:3d}  {:11.4f}'.format(frame+1,
+            #        pep+1, float(coord)/float(lPep)))
+        print('{:6d} {:9.4f} {:4d}'.format(frame+1,
+                float(coordMax)/float(lPep), pepMax+1))
+
+
+#
+# MAIN PROGRAM
+#
+
+traj = []
+ext = args.i.split('.')[-1]
+if ext == 'h5':
+    traj = md.load_hdf5(args.i, stride=args.stride,
+            frame=args.single)
+elif ext == 'dcd':
+    traj = md.load_dcd(args.i, top=args.t, stride=args.stride,
+            frame=args.single)
+elif ext == 'trr':
+    traj = md.load_trr(args.i, top=args.t, stride=args.stride,
+            frame=args.single)
+elif ext == 'xtc':
+    traj = md.load_xtc(args.i, top=args.t, stride=args.stride,
+            frame=args.single)
+elif ext == 'pdb':
+    if args.t:
+        traj = md.load(args.i, top=args.t, stride=args.stride,
+                frame=args.single)
+    else:
+        traj = md.load_pdb(args.i, stride=args.stride,
+                frame=args.single)
+elif ext == 'cif':
+    if args.t:
+        traj = md.load(args.i, top=args.t, stride=args.stride,
+                frame=args.single)
+    else:
+        traj = md.formats.pdbx.load_pdbx(args.i, stride=args.stride,
+                frame=args.single)
+elif ext == 'inpcrd':
+    traj = md.load(args.i, top=args.t)
+else:
+    traj = md.load(args.i)
+
+top = traj.topology
+ref = traj
+
+if args.select:
+    traj = traj.atom_slice(top.select(args.select))
+    top = traj.topology
+
+if args.frames:
+    traj, top = selFrames(traj, top)
+
+if args.ref:
+    ref = md.load(args.t)
+    if args.select:
+        ref = ref.atom_slice(ref.topology.select(args.select))
+
+if args.anchor:
+    anchor = 0
+    if args.anchor.split()[0] == 'chainid':
+        anchor = [set(top.chain(int(args.anchor.split()[1])).atoms)]
+    elif args.anchor.split()[0] == 'resid':
+        anchor = [set(top.residue(int(args.anchor.split()[1])).atoms)]
+    else:
+        sys.exit('ERROR: anchor needs to be a single chainid or resid')
+    traj.image_molecules(inplace=True, anchor_molecules=anchor)
+
+if args.super:
+    atoms = top.select(args.super)
+    traj.superpose(reference=ref, frame=args.superfr, atom_indices=atoms)
+    top = traj.topology
+
+if args.info:
+    print(traj)
+    print(top)
+    if traj.n_frames == 1:
+        xyz = traj.xyz
+        dist = []
+        for atom in range(0, traj.n_atoms):
+            dist.append(np.sqrt(xyz[0][atom][0]**2 + xyz[0][atom][1]**2
+                    + xyz[0][atom][2]**2))
+        print('Min container radius: {:.2f}'.format(max(dist)))
+
+if args.hbond:
+    getHbonds(traj, top)
+
+if args.saltbr:
+    getSaltBridge(traj, top)
+
+if args.dssp:
+    getDSSP(traj, top)
+
+if args.rg:
+    getRg(traj)
+
+if args.rmsd:
+    getRMSD(traj, top, ref)
+
+if args.rmsf:
+    getRMSF(traj, top, ref)
+
+if args.pi:
+    getPeriodicDist(traj, top, ref)
+
+if args.dist:
+    getDist(traj, top)
+
+if args.contacts:
+    getContacts(traj, top)
+
+if args.split:
+    fbase, fmt = args.split.split(':')
+    for idx in range(0, traj.n_frames):
+        fname = '{:s}{:0{:s}d}.pdb'.format(fbase, idx+1, fmt)
+        traj[idx].save_pdb(fname)
+elif args.o:
+    if args.bfac:
+        bfac = np.loadtxt(args.bfac, comments='#')
+        traj.save_pdb(args.o, bfactors=bfac)
+    else:
+        traj.save(args.o)
