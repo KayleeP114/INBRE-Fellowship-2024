@@ -28,10 +28,9 @@ rmsd3_values = rmsd3[:, 1]
 
 # Plot the data
 plt.figure(figsize=(10, 6))
-plt.plot(time, rmsd1_values, label='H++ RMSD', color='blue')
-plt.plot(time, rmsd2_values, label='PropKa RMSD', color='gray')
-plt.plot(time, rmsd3_values, label='PypKa RMSD', color='red')
-plt.title('RMSD')
+plt.plot(time, rmsd1_values, label='H++', color='blue')
+plt.plot(time, rmsd2_values, label='PropKa', color='gray')
+plt.plot(time, rmsd3_values, label='PypKa', color='red')
 plt.xlabel('Time (ns)')
 plt.ylabel('RMSD (nm)')
     
