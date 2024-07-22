@@ -1,4 +1,4 @@
-import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 
 # Files for data inputs
@@ -6,27 +6,31 @@ file1 = 'H_rmsd.dat'
 file2 = 'propka_rmsd.dat'
 file3 = 'pypka_rmsd.dat'
 
-#Reading data from files
-with open(file1, 'r') as f1:
-    rmsd1 = f1.readlines()
+#Convert data from file
+def read_data(file):
+    with open(file, 'r') as f:
+        data = np.loadtxt(f)
+    return data
 
-with open(file2, 'r') as f2:
-    rmsd2 = f2.readlines()
+#Read data from files
+rmsd1 = read_data(file1)
+rmsd2 = read_data(file2)
+rmsd3 = read_data(file3)
 
-with open(file3, 'r') as f3:
-    rmsd3 = f3.readlines()
-
-#Setting time
-time = rmsd1.iloc[:, 0]
+#Assigning time and rmsd values
+time = rmsd1[:, 0]
+rmsd1_values = rmsd1[:, 1]
+rmsd2_values = rmsd2[:, 1]
+rmsd3_values = rmsd3[:, 1]
 
 # Plot the data
 plt.figure(figsize=(10, 6))
-plt.plot(time, rmsd1, label='RMSD 1', color='blue')
-plt.plot(time, rmsd2, label='RMSD 2', color='gray')
-plt.plot(time, rmsd3, label='RMSD 3', color='red')
-plt.title('RMSD', fontsize=25, fontname='Times New Roman')
-plt.xlabel('Time (ns)', fontsize=20, fontname='Times New Roman')
-plt.ylabel('RMSD (nm)', fontsize=20, fontname='Times New Roman')
+plt.plot(time, rmsd1_values, label='H++ RMSD', color='blue')
+plt.plot(time, rmsd2_values, label='PropKa RMSD', color='gray')
+plt.plot(time, rmsd3_values, label='PypKa RMSD', color='red')
+plt.title('RMSD', fontsize=30, fontname='Times New Roman')
+plt.xlabel('Time (ns)', fontsize=30, fontname='Times New Roman')
+plt.ylabel('RMSD (nm)', fontsize=30, fontname='Times New Roman')
     
 # Show plot
 plt.show()
