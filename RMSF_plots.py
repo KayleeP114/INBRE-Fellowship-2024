@@ -20,7 +20,7 @@ rmsf1 = read_data(file1)
 rmsf2 = read_data(file2)
 rmsf3 = read_data(file3)
 
-#Assigning residue and rmsd values
+#Assigning residue and rmsf values
 residue = rmsf1[:, 0]
 rmsf1_values = rmsf1[:, 1]
 rmsf2_values = rmsf2[:, 1]
@@ -31,7 +31,7 @@ plt.figure(figsize=(10, 6))
 plt.plot(residue, rmsf1_values, label='H++', color='blue')
 plt.plot(residue, rmsf2_values, label='PropKa', color='gray')
 plt.plot(residue, rmsf3_values, label='PypKa', color='red')
-plt.xlabel('Residue Number')
+plt.xlabel('Alpha carbon number')
 plt.ylabel('RMSF (nm)')
     
 # Show plot
