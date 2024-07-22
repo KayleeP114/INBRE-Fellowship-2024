@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+#Set default font size
+plt.rcParams.update({'font.size':40})
+
 # Files for data inputs
 file1 = 'H_rmsd.dat'
 file2 = 'propka_rmsd.dat'
@@ -28,9 +31,9 @@ plt.figure(figsize=(10, 6))
 plt.plot(time, rmsd1_values, label='H++ RMSD', color='blue')
 plt.plot(time, rmsd2_values, label='PropKa RMSD', color='gray')
 plt.plot(time, rmsd3_values, label='PypKa RMSD', color='red')
-plt.title('RMSD', fontsize=40, fontname='Times New Roman')
-plt.xlabel('Time (ns)', fontsize=40, fontname='Times New Roman')
-plt.ylabel('RMSD (nm)', fontsize=40, fontname='Times New Roman')
+plt.title('RMSD')
+plt.xlabel('Time (ns)')
+plt.ylabel('RMSD (nm)')
     
 # Show plot
 plt.show()
