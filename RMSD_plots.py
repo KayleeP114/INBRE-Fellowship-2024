@@ -21,7 +21,7 @@ rmsd2 = read_data(file2)
 rmsd3 = read_data(file3)
 
 #Assigning time and rmsd values
-time = (0, 100)
+time = rmsd1[:, 0]
 rmsd1_values = rmsd1[:, 1]
 rmsd2_values = rmsd2[:, 1]
 rmsd3_values = rmsd3[:, 1]
