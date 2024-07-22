@@ -17,7 +17,7 @@ with open(file3, 'r') as f3:
     rmsd3 = f3.readlines()
 
 #Setting time
-time = data.iloc[:, 0]
+time = rmsd1.iloc[:, 0]
 
 # Plot the data
 plt.figure(figsize=(10, 6))
