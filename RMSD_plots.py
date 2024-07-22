@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #Set default font size
-plt.rcParams.update({'font.size':40})
+plt.rcParams.update({'font.size':20})
 
 # Files for data inputs
 file1 = 'H_rmsd.dat'
