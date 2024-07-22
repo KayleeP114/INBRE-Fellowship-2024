@@ -28,9 +28,9 @@ plt.figure(figsize=(10, 6))
 plt.plot(time, rmsd1_values, label='H++ RMSD', color='blue')
 plt.plot(time, rmsd2_values, label='PropKa RMSD', color='gray')
 plt.plot(time, rmsd3_values, label='PypKa RMSD', color='red')
-plt.title('RMSD', fontsize=30, fontname='Times New Roman')
-plt.xlabel('Time (ns)', fontsize=30, fontname='Times New Roman')
-plt.ylabel('RMSD (nm)', fontsize=30, fontname='Times New Roman')
+plt.title('RMSD', fontsize=40, fontname='Times New Roman')
+plt.xlabel('Time (ns)', fontsize=20, fontname='Times New Roman')
+plt.ylabel('RMSD (nm)', fontsize=20, fontname='Times New Roman')
     
 # Show plot
 plt.show()
