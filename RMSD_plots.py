@@ -20,8 +20,11 @@ rmsd1 = read_data(file1)
 rmsd2 = read_data(file2)
 rmsd3 = read_data(file3)
 
-#Assigning time and rmsd values
-time = rmsd1[:, 0]
+#Convert frames to time in ns
+frames_to_time = 0.1
+time = rmsd1[:, 0] * frames_to_time
+
+#Assigning rmsd values
 rmsd1_values = rmsd1[:, 1]
 rmsd2_values = rmsd2[:, 1]
 rmsd3_values = rmsd3[:, 1]
