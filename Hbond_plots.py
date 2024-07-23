@@ -12,7 +12,7 @@ def read_hbond_data(data_file):
         for line in file:
             if not line.startswith('#'):
                 parts = line.split()
-                bonds = ''.join(parts[:-1])
+                bond = ''.join(parts[:-1])
                 fraction = float(parts[-1])
                 bonds.append(bond)
                 fractions.append(fraction)
@@ -22,10 +22,6 @@ def read_hbond_data(data_file):
 bonds1, fractions1 = read_hbond_data('H_hbond.dat')
 bonds2, fractions2 = read_hbond_data('propka_hbond.dat')
 bonds3, fractions3 = read_hbond_data('pypka_hbond.dat')
-
-#Convert lists to numpy arrays
-bonds = np.array(bonds)
-fractions = np.array(fractions)
 
 # Plot the data
 plt.figure(figsize=(10, 6))
