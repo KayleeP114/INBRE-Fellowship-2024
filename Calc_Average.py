@@ -34,7 +34,7 @@ def main(file_path, total_snapshots):
     print(f"The average number of hydrogen bonds based on interactions present in 50% or more of the frames is: {average_bonds:.2f}")
 
 # Example usage
-file_path = 'H_hbond.dat'  
+file_path = 'propka_hbond.dat'  
 total_snapshots = 1000  
 
 if __name__ == "__main__":
