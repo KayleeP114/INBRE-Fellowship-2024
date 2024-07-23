@@ -12,7 +12,7 @@ def read_hbond_data(data_file):
         for line in file:
             if not line.startswith('#'):
                 parts = line.split()
-                bond = ''.join(parts[:-1])
+                bonds = ''.join(parts[:-1])
                 fraction = float(parts[-1])
                 bonds.append(bond)
                 fractions.append(fraction)
