@@ -2,6 +2,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+#set default font size
+plt.rcParams.update({'font.size':20})
+
 # Function to read data from a file
 def read_data(filename):
     with open(filename, 'r') as file:
@@ -39,13 +42,13 @@ plt.figure(figsize=(15, 10))
 interactions = combined_data['Interaction']
 
 # Create a bar plot
-bar_width = 0.25
+bar_width = 0.5
 indices = np.arange(len(interactions))
 
 # Plot bars for each file
-plt.bar(indices, combined_data['Fraction_1'], bar_width, label='File 1')
-plt.bar(indices + bar_width, combined_data['Fraction_2'], bar_width, label='File 2')
-plt.bar(indices + 2 * bar_width, combined_data['Fraction_3'], bar_width, label='File 3')
+plt.bar(indices, combined_data['Fraction_1'], bar_width, label='H++', color='blue')
+plt.bar(indices + bar_width, combined_data['Fraction_2'], bar_width, label='PropKa', color='gray')
+plt.bar(indices + 2 * bar_width, combined_data['Fraction_3'], bar_width, label='PypKa', color='red')
 
 # Customize the plot
 plt.xlabel('Interaction')
