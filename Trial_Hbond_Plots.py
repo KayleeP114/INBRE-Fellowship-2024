@@ -24,33 +24,34 @@ data1 = read_data('H_hbond.dat')
 data2 = read_data('propka_hbond.dat')
 data3 = read_data('pypka_hbond.dat')
 
-# Combine data into a single DataFrame for easier plotting
-combined_data = pd.concat([
-    data1.assign(Source='File 1'),
-    data2.assign(Source='File 2'),
-    data3.assign(Source='File 3')
-])
+# Merge data on the Interaction column
+combined_data = pd.merge(data1, data2, on='Interaction', how='outer', suffixes=('_1', '_2'))
+combined_data = pd.merge(combined_data, data3, on='Interaction', how='outer')
+combined_data.columns = ['Interaction', 'Fraction_1', 'Fraction_2', 'Fraction_3']
+
+# Replace NaN values with 0 for plotting
+combined_data.fillna(0, inplace=True)
 
 # Plotting the data
 plt.figure(figsize=(15, 10))
 
 # Unique interactions
-interactions = combined_data['Interaction'].unique()
+interactions = combined_data['Interaction']
 
 # Create a bar plot
 bar_width = 0.1
 indices = np.arange(len(interactions))
 
 # Plot bars for each file
-plt.bar(indices, data1['Fraction'], bar_width, label='File 1')
-plt.bar(indices + bar_width, data2['Fraction'], bar_width, label='File 2')
-plt.bar(indices + 2 * bar_width, data3['Fraction'], bar_width, label='File 3')
+plt.bar(indices, combined_data['Fraction_1'], bar_width, label='File 1')
+plt.bar(indices + bar_width, combined_data['Fraction_2'], bar_width, label='File 2')
+plt.bar(indices + 2 * bar_width, combined_data['Fraction_3'], bar_width, label='File 3')
 
 # Customize the plot
 plt.xticks(indices + bar_width, interactions, rotation=90)
 plt.xlabel('Interaction')
-plt.ylabel('Fraction of Frames')
-
+plt.ylabel('Fraction')
 
 # Display the plot
 plt.show()
+
