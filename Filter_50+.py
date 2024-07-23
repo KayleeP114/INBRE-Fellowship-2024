@@ -20,7 +20,7 @@ def filter_interactions(file_path, threshold_fraction=0.50):
     return interactions
 
 # Example usage
-file_path = 'H_hbond.dat'  
+file_path = 'H_saltbr.dat'  
 filtered_interactions = filter_interactions(file_path)
 
 print("Interactions present in 50% or more of the frames:")
