@@ -27,6 +27,6 @@ def calculate_average_hydrogen_bonds(file_path):
 
 
 # Example usage
-file_path = 'H_bond.dat'  
+file_path = 'H_hbond.dat'  
 average = calculate_average_hydrogen_bonds(file_path)
 print(f"The average number of hydrogen bonds is: {average:.2f}")
