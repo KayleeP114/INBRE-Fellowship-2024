@@ -52,8 +52,7 @@ plt.bar(indices + 2 * bar_width, combined_data['Fraction_3'], bar_width, label='
 
 # Customize the plot
 plt.xlabel('Interaction')
-plt.ylabel('Fraction')
+plt.ylabel('Fraction of Frames')
 
 # Display the plot
 plt.show()
-

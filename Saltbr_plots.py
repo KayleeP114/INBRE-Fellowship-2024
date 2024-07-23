@@ -1,35 +1,58 @@
-import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
-#Set default font size
+#set default font size
 plt.rcParams.update({'font.size':20})
 
-# Function to read hydrogen bond data
-def read_hbond_data(data_file):
-    bonds = []
-    fractions = []
-    with open(data_file, 'r') as file:
-        for line in file:
-            if not line.startswith('#'):
-                parts = line.split()
-                bond = ''.join(parts[:-1])
-                fraction = float(parts[-1])
-                bonds.append(bond)
-                fractions.append(fraction)
-    return bonds, fractions
+# Function to read data from a file
+def read_data(filename):
+    with open(filename, 'r') as file:
+        lines = file.readlines()
 
-#Read data from files
-bonds1, fractions1 = read_hbond_data('H_saltbr.dat')
-bonds2, fractions2 = read_hbond_data('propka_saltbr.dat')
-bonds3, fractions3 = read_hbond_data('pypka_saltbr.dat')
+    # Parse the data, skipping the header
+    data = []
+    for line in lines[1:]:  # Skip the header line
+        parts = line.split()
+        # Select necessary columns: donor, acceptor, and fraction
+        donor = parts[0]
+        acceptor = parts[2]
+        fraction = float(parts[3])
+        data.append([f"{donor} --> {acceptor}", fraction])
 
-# Plot the data
-plt.figure(figsize=(10, 6))
-plt.plot(bonds1, fractions1, label='H++', color='blue')
-plt.plot(bonds2, fractions2, label='PropKa', color='gray')
-plt.plot(bonds3, fractions3, label='PypKa', color='red')
-plt.xlabel('Interactions')
+    return pd.DataFrame(data, columns=['Interaction', 'Fraction'])
+
+# Read data from each file
+data1 = read_data('H_saltbr.dat')
+data2 = read_data('propka_saltbr.dat')
+data3 = read_data('pypka_saltbr.dat')
+
+# Merge data on the Interaction column
+combined_data = pd.merge(data1, data2, on='Interaction', how='outer', suffixes=('_1', '_2'))
+combined_data = pd.merge(combined_data, data3, on='Interaction', how='outer')
+combined_data.columns = ['Interaction', 'Fraction_1', 'Fraction_2', 'Fraction_3']
+
+# Replace NaN values with 0 for plotting
+combined_data.fillna(0, inplace=True)
+
+# Plotting the data
+plt.figure(figsize=(15, 10))
+
+# Unique interactions
+interactions = combined_data['Interaction']
+
+# Create a bar plot
+bar_width = 0.5
+indices = np.arange(len(interactions))
+
+# Plot bars for each file
+plt.bar(indices, combined_data['Fraction_1'], bar_width, label='H++', color='blue')
+plt.bar(indices + bar_width, combined_data['Fraction_2'], bar_width, label='PropKa', color='gray')
+plt.bar(indices + 2 * bar_width, combined_data['Fraction_3'], bar_width, label='PypKa', color='red')
+
+# Customize the plot
+plt.xlabel('Interaction')
 plt.ylabel('Fraction of Frames')
-    
-# Show plot
+
+# Display the plot
 plt.show()
