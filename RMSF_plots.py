@@ -28,9 +28,9 @@ rmsf3_values = rmsf3[:, 1]
 
 # Plot the data
 plt.figure(figsize=(10, 6))
-plt.plot(residue, rmsf1_values, label='H++', color='blue')
+plt.plot(residue, rmsf1_values, label='H++', color='purple')
 plt.plot(residue, rmsf2_values, label='PropKa', color='gray')
-plt.plot(residue, rmsf3_values, label='PypKa', color='red')
+plt.plot(residue, rmsf3_values, label='PypKa', color='green')
 plt.xlabel('Alpha carbon number')
 plt.ylabel('RMSF (nm)')
     
