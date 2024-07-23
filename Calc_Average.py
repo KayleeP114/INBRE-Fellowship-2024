@@ -33,7 +33,7 @@ def calculate_average_number_of_hydrogen_bonds(file_path, total_snapshots):
     return average_bonds_total
 
 # Example usage
-file_path = 'propka_hbond.dat'  
+file_path = 'pypka_hbond.dat'  
 total_snapshots = 1000  
 average_bonds = calculate_average_number_of_hydrogen_bonds(file_path, total_snapshots)
 print(f"The average number is: {average_bonds:.2f}")
