@@ -1,7 +1,9 @@
-def calculate_average_number_of_hydrogen_bonds(file_path):
+# average_number_of_hydrogen_bonds.py
+
+def calculate_average_number_of_hydrogen_bonds(file_path, total_snapshots):
     # Initialize variables
     total_bonds = 0
-    total_fractions = 0
+    total_count = 0
 
     # Open and read the file
     with open(file_path, 'r') as file:
@@ -16,17 +18,22 @@ def calculate_average_number_of_hydrogen_bonds(file_path):
             fraction = float(parts[-1])
             
             # Approximate number of hydrogen bonds for this entry
-            # Assuming fraction represents the number of bonds observed
-            total_bonds += fraction
-            total_fractions += 1
+            # Each fraction represents the bond count for one snapshot
+            bonds_per_snapshot = fraction
+            total_bonds += bonds_per_snapshot
+            total_count += 1
     
-    # Calculate average
-    if total_fractions == 0:
+    # Calculate average number of hydrogen bonds per snapshot
+    if total_count == 0:
         return 0
-    average_number_of_bonds = total_bonds / total_fractions
-    return average_number_of_bonds
+    average_bonds_per_snapshot = total_bonds / total_count
+    
+    # Calculate average number of hydrogen bonds over all snapshots
+    average_bonds_total = average_bonds_per_snapshot * total_snapshots
+    return average_bonds_total
 
 # Example usage
-file_path = 'H_hbond.dat'  # Replace with your file path
-average_bonds = calculate_average_number_of_hydrogen_bonds(file_path)
-print(f"The average number of hydrogen bonds is: {average_bonds:.2f}")
+file_path = 'H_hbond.dat'  
+total_snapshots = 1000  
+average_bonds = calculate_average_number_of_hydrogen_bonds(file_path, total_snapshots)
+print(f"The average number is: {average_bonds:.2f}")
