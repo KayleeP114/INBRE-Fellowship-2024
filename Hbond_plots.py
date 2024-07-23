@@ -30,7 +30,7 @@ plt.figure(figsize=(12, 8))
 
 for i, (bonds, fractions) in enumerate(zip(all_bonds, all_fractions)):
     y_positions = np.arange(len(bonds))
-    plt.barh(y_positions + i * bar_width, fractions, height=bar_width, label=label[i], align='center')
+    plt.barh(y_positions + i * bar_width, fractions, height=bar_width, label=labels[i], align='center')
 
 #Customize Plot
 plt.yticks(y_positions + bar_width, all_bonds[0])
