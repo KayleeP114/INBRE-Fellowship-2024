@@ -24,11 +24,8 @@ def plot_hbonds(data_files, output_file):
         all_bonds.append(bonds)
         all_fractions.append(fractions)
 
-#Convert lists to numpy arrays
-max_bonds_length = max(len(bonds) for bonds in all_bonds)
-bar_width = 0.2
-
 # Plot the data
+bar_width = 0.2
 plt.figure(figsize=(12, 8))
 
 for i, (bonds, fractions) in enumerate(zip(all_bonds, all_fractions)):
