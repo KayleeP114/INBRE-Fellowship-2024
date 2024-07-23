@@ -31,7 +31,7 @@ def calculate_average_number_of_hydrogen_bonds(file_path, total_snapshots):
     return average_bonds_total
 
 # Example usage
-file_path = 'path_to_your_file.txt'  
+file_path = 'H_saltbr_50.dat'  
 total_snapshots = 1000  
 average_bonds = calculate_average_number_of_hydrogen_bonds(file_path, total_snapshots)
 print(f"The average number of hydrogen bonds is: {average_bonds:.2f}")
