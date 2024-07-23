@@ -27,6 +27,6 @@ def calculate_average_hydrogen_bonds(file_path):
 
 
 # Example usage
-file_path = 'pypka_hbond.dat'  
+file_path = 'pypka_saltbr.dat'  
 average = calculate_average_hydrogen_bonds(file_path)
-print(f"The average number of hydrogen bonds is: {average:.2f}")
+print(f"The average number is: {average:.2f}")
