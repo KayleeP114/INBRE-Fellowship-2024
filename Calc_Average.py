@@ -1,7 +1,7 @@
-def calculate_average_hydrogen_bonds(file_path):
+def calculate_average_number_of_hydrogen_bonds(file_path):
     # Initialize variables
-    total_fraction = 0
-    count = 0
+    total_bonds = 0
+    total_fractions = 0
 
     # Open and read the file
     with open(file_path, 'r') as file:
@@ -15,18 +15,18 @@ def calculate_average_hydrogen_bonds(file_path):
             # The last part is the fraction value
             fraction = float(parts[-1])
             
-            # Accumulate the total fraction and count
-            total_fraction += fraction
-            count += 1
+            # Approximate number of hydrogen bonds for this entry
+            # Assuming fraction represents the number of bonds observed
+            total_bonds += fraction
+            total_fractions += 1
     
     # Calculate average
-    if count == 0:
+    if total_fractions == 0:
         return 0
-    average_fraction = total_fraction / count
-    return average_fraction
-
+    average_number_of_bonds = total_bonds / total_fractions
+    return average_number_of_bonds
 
 # Example usage
-file_path = 'H_saltbr.dat'  
-average = calculate_average_hydrogen_bonds(file_path)
-print(f"The average number is: {average:.2f}")
+file_path = 'H_hbond.dat'  # Replace with your file path
+average_bonds = calculate_average_number_of_hydrogen_bonds(file_path)
+print(f"The average number of hydrogen bonds is: {average_bonds:.2f}")
