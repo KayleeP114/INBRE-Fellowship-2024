@@ -39,7 +39,7 @@ plt.figure(figsize=(15, 10))
 interactions = combined_data['Interaction']
 
 # Create a bar plot
-bar_width = 0.1
+bar_width = 0.25
 indices = np.arange(len(interactions))
 
 # Plot bars for each file
@@ -48,7 +48,6 @@ plt.bar(indices + bar_width, combined_data['Fraction_2'], bar_width, label='File
 plt.bar(indices + 2 * bar_width, combined_data['Fraction_3'], bar_width, label='File 3')
 
 # Customize the plot
-plt.xticks(indices + bar_width, interactions, rotation=90)
 plt.xlabel('Interaction')
 plt.ylabel('Fraction')
 
