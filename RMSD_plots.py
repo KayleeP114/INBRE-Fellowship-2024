@@ -39,3 +39,12 @@ plt.ylabel('RMSD (nm)')
     
 # Show plot
 plt.show()
+
+#Calculate Average 
+average_rmsd1 = np.mean(rmsd1_values)
+average_rmsd2 = np.mean(rmsd2_values)
+average_rmsd3 = np.mean(rmsd3_values)
+
+print(f'Average RMSD (1): {average_rmsd1:.3f} nm')
+print(f'Average RMSD (2): {average_rmsd2:.3f} nm')
+print(f'Average RMSD (3): {average_rmsd3:.3f} nm')
