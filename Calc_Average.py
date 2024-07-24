@@ -17,3 +17,5 @@ fractions_3 = [
 # Calculate the average number of hydrogen bonds present in any given frame
 average_hbonds_3 = sum(fractions_3)
 average_hbonds_3
+
+print("Average number of hydrogen bonds:", average_hbonds_3)
