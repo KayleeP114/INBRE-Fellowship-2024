@@ -6,7 +6,7 @@ fractions = [
 ]
 
 # Calculate the average number of hydrogen bonds present in any given frame
-average_hbonds = sum(fractions)
-average_hbonds
+average_saltbr = sum(fractions)
+average_saltbr
 
 print("Average number of salt bridges:", average_saltbr)
