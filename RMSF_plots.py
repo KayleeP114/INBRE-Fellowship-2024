@@ -36,3 +36,12 @@ plt.ylabel('RMSF (nm)')
     
 # Show plot
 plt.show()
+
+#Calculate Average 
+average_rmsf1 = np.mean(rmsf1_values)
+average_rmsf2 = np.mean(rmsf2_values)
+average_rmsf3 = np.mean(rmsf3_values)
+
+print(f'Average RMSF (1): {average_rmsf1:.3f} nm')
+print(f'Average RMSF (2): {average_rmsf2:.3f} nm')
+print(f'Average RMSF (3): {average_rmsf3:.3f} nm')
